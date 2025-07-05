@@ -1,77 +1,49 @@
-import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
 
-const AddMovieForm = ({ onAdd }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [posterUrl, setPosterUrl] = useState('');
-  const [rating, setRating] = useState('');
+function AddMovieForm({ onAdd }) {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    trailerUrl: '',
+    poster: '',
+    rating: 0,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: name === 'rating' ? Number(value) : value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !description || !posterUrl || !rating) {
-      alert('Remplissez tous les champs !');
-      return;
-    }
-    if (rating < 0 || rating > 5) {
-      alert('La note doit être entre 0 et 5');
-      return;
-    }
-    onAdd({
-      title,
-      description,
-      posterUrl,
-      rating: parseFloat(rating),
-    });
-    setTitle('');
-    setDescription('');
-    setPosterUrl('');
-    setRating('');
+    onAdd(formData);
+    setFormData({ title: '', description: '', trailerUrl: '', poster: '', rating: 0 });
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="mb-4">
-      <Form.Group className="mb-2">
-        <Form.Control
-          type="text"
-          placeholder="Titre"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-2">
-        <Form.Control
-          type="text"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-2">
-        <Form.Control
-          type="text"
-          placeholder="URL affiche"
-          value={posterUrl}
-          onChange={(e) => setPosterUrl(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Control
-          type="number"
-          placeholder="Note (0-5)"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-          min="0"
-          max="5"
-          step="0.1"
-        />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Ajouter un film
-      </Button>
-    </Form>
+    <form onSubmit={handleSubmit} className="mb-4">
+      <div className="row g-2">
+        <div className="col-md-3">
+          <input name="title" value={formData.title} onChange={handleChange} className="form-control" placeholder="Titre" required />
+        </div>
+        <div className="col-md-3">
+          <input name="poster" value={formData.poster} onChange={handleChange} className="form-control" placeholder="URL de l'affiche" required />
+        </div>
+        <div className="col-md-2">
+          <input name="trailerUrl" value={formData.trailerUrl} onChange={handleChange} className="form-control" placeholder="URL de la bande-annonce" required />
+        </div>
+        <div className="col-md-2">
+          <input name="rating" value={formData.rating} onChange={handleChange} className="form-control" type="number" min="0" max="10" placeholder="Note" required />
+        </div>
+        <div className="col-md-12 mt-2">
+          <textarea name="description" value={formData.description} onChange={handleChange} className="form-control" placeholder="Description" required />
+        </div>
+        <div className="col-md-12 mt-2">
+          <button type="submit" className="btn btn-success w-100">Ajouter un film</button>
+        </div>
+      </div>
+    </form>
   );
-};
+}
 
 export default AddMovieForm;

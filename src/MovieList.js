@@ -1,21 +1,15 @@
-import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import MovieCard from './MovieCard';
 
-const MovieList = ({ movies }) => {
-  if (movies.length === 0) return <p>Aucun film trouvé.</p>;
-
+function MovieList({ movies }) {
   return (
-    <Row>
-      {movies.map((movie, idx) => (
-        <Col key={idx} md={4} className="mb-4">
-          <MovieCard {...movie} />
-        </Col>
+    <div className="row">
+      {movies.map((movie) => (
+        <div className="col-md-4 mb-4" key={movie.id}>
+          <MovieCard movie={movie} />
+        </div>
       ))}
-    </Row>
+    </div>
   );
-};
+}
 
 export default MovieList;
-

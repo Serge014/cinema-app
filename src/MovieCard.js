@@ -1,17 +1,18 @@
-import React from 'react';
-import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 
-const MovieCard = ({ title, description, posterUrl, rating }) => {
+function MovieCard({ movie }) {
   return (
-    <Card style={{ height: '100%' }}>
-      <Card.Img variant="top" src={posterUrl} alt={title} style={{ height: 300, objectFit: 'cover' }} />
-      <Card.Body>
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>{description}</Card.Text>
-        <Card.Text><strong>Note :</strong> {rating} / 5</Card.Text>
-      </Card.Body>
-    </Card>
+    <div className="card h-100">
+      <img src={movie.poster} className="card-img-top" alt={movie.title} style={{ height: "300px", objectFit: "cover" }} />
+      <div className="card-body d-flex flex-column justify-content-between">
+        <div>
+          <h5 className="card-title">{movie.title}</h5>
+          <p className="card-text">Note : {movie.rating}/10</p>
+        </div>
+        <Link to={`/film/${movie.id}`} className="btn btn-primary mt-2">Voir Détails</Link>
+      </div>
+    </div>
   );
-};
+}
 
 export default MovieCard;
